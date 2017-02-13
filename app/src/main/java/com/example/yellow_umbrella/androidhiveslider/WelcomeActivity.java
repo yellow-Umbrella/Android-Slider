@@ -27,7 +27,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private TextView[] dots;
     private int[] layouts;
-    private Button btnSkip, btnNext;
+    private Button btnPrev, btnNext, btnSkip;
     private PrefManager prefManager;
 
     @Override
@@ -50,8 +50,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
-        btnSkip = (Button) findViewById(R.id.btn_skip);
+        btnPrev = (Button) findViewById(R.id.btn_prev);
         btnNext = (Button) findViewById(R.id.btn_next);
+        btnSkip = (Button) findViewById(R.id.btn_skip);
+
+        btnPrev.setVisibility(View.GONE);
 
         // layouts of all welcome sliders
         layouts = new int[] {
@@ -75,6 +78,14 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 launchHomeScreen();
+            }
+        });
+
+        btnPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int current = getItem(-1);
+                viewPager.setCurrentItem(current);
             }
         });
 
@@ -138,9 +149,13 @@ public class WelcomeActivity extends AppCompatActivity {
                 // last page. make button text to GOT IT
                 btnNext.setText(getString(R.string.start));
                 btnSkip.setVisibility(View.GONE);
+//                btnPrev.setVisibility(View.GONE);
+            } else if(position == 0) {
+                btnPrev.setVisibility(View.GONE);
             } else {
                 // still pages are left
                 btnNext.setText(getString(R.string.next));
+                btnPrev.setVisibility(View.VISIBLE);
                 btnSkip.setVisibility(View.VISIBLE);
             }
 
